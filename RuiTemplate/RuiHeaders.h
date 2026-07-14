@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <stdint.h>
 #include <cmath>
+#include <algorithm>
 
 typedef int _DWORD;
 typedef long long _QWORD;
@@ -49,41 +50,30 @@ struct unknownGlobalsStruct
 static_assert(sizeof(unknownGlobalsStruct)==0x40);
 
 
+
 struct RuiGlobals
 {
-	float rotationMatrixA[4];
-	float rotationMatrixB[4];
-	float rotationMatrixC[4];
-	_DWORD dword_30;
-	_DWORD dword_34;
-	_DWORD dword_38;
-	Vector3 localPlayerPos[3];
+	_BYTE localToWorldMatrix[48];
+	Vector3 camOriginLocal;
+	Vector3 localPlayerPos;
 	float screenWidth;
 	float screenHeight;
 	_BYTE gap_48[64];
 	uint64_t frameTime;
 	float currentTime;
-	_BYTE gap_9C[4];
-	int dword_A0;
-	int isConsole;
-	int dword_A8;
-	int dword_AC;
-	int dword_B0;
-	int dword_B4;
+	float uiTime;
+	int isKillReplay;
+	int isUsingController;
+	int isAlive;
+	int isSpectating;
+	int isMenuOpen;
+	int isPhaseShifted;
 	float globalAdsFrac; //adsfrac
-	float float_BC;
-	float float_C0;
-	int dword_C4;
-	float float_C8;
-	float float_CC;
-	_DWORD dword_D0;
-	_DWORD dword_D4;
-	_DWORD dword_D8;
-	_DWORD dword_DC;
-	float float_E0; //match xp gained?
-	_DWORD dword_E4; // bool for when big thing like "titan ready" in the middle of screen
-	_BYTE gap_E8[8];
-
+	Vector3 friendlyTeamColor;
+	Vector3 enemyTeamColor;
+	Vector3 partyTeamColor;
+	float announcementChangeTime;
+	int announcementIsActive;
 };
 
 
@@ -107,7 +97,7 @@ struct RuiInstance
 struct RuiFunctions_t
 {
 	void (__fastcall *setHidden)(RuiInstance *a1);
-	void (__fastcall *setError)(RuiInstance *a1);
+	void (__fastcall *setNoRender)(RuiInstance *a1);
 	__int64 (__fastcall *SetErrorWithReason)(RuiInstance *a1, const char *a2);
 	__m128 *(__fastcall *GetTransformSize)(RuiInstance *a1);
 	__m128 (__fastcall *GetTextSize)(RuiInstance *a1, unsigned int a2);
